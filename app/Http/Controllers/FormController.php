@@ -34,7 +34,7 @@ class FormController extends Controller
 
     public function searchFunction(Form $form, Request $request)
     {
-        $forms=Form::all();
+        $forms = Form::all();
         return response($forms);
 
 //          $search = $request->input('search');
@@ -49,7 +49,8 @@ class FormController extends Controller
 //            ->orWhere('email','like','%'.$search.'%')
 //        ;
     }
-    public function search(Request $request,Form $form)
+
+    public function search(Request $request, Form $form)
     {
 
 //        $item = $request->input('item');
@@ -63,31 +64,43 @@ class FormController extends Controller
 //        } else {
 //            return response()->json(array('status' => false, 'msg' => 'خطایی در سیستم رخ داده است لطفا هر چه سریعتر این موضوع را به بخش فنی گزارش دهید.'));
 //        }
-        $out="";
-        $sex="";
-        if ($request->ajax()){
-            $posts=$form->where('name','LIKE','%'.$request->search.'%')
-
-                ->orWhere('id','LIKE','%'.$request->search.'%')
-                ->orWhere('text','LIKE','%'.$request->search.'%')->get();
+        $out = "";
+        $sex = "";
+        if ($request->ajax()) {
+            $posts = $form->where('name', 'LIKE', '%' . $request->search . '%')
+                ->orWhere('id', 'LIKE', '%' . $request->search . '%')
+                ->orWhere('text', 'LIKE', '%' . $request->search . '%')->get();
 //            $posts=DB::table('posts')->where('title','LIKE','%'.$request->search.'%')
 //                                     ->orWhere('content','LIKE','%'.$request->search.'%')->get();
 
-            if ($posts){
-                foreach ($posts as $key=>$pos){
-                    if ($pos->sex==0){
-                        $sex="Male";
-                    }else{
-                        $sex="Female";
-                    }
-                    $out='<tr>'.
-                        '<td>'.$pos->id.'</td>'.
-                        '<td>'.$pos->name.'</td>'.
-                        '<td>'.$pos->text.'</td>'.
+            if (count($posts) > 0) {
+                foreach ($posts as $key => $pos) {
+//                    if ($pos->sex == 0) {
+//                        $sex = "Male";
+//                    } else {
+//                        $sex = "Female";
+//                    }
+                    $out .= '<tr>' .
+                        '<td>' . $pos->id . '</td>' .
+                        '<td>' . $pos->name . '</td>' .
+                        '<td>' . $pos->text . '</td>' .
+                        '<td>' . "<form action=\"http://localhost:8000/admin/form/$pos->id\"
+                                                   method=\"post\">
+                                                       " . method_field('DELETE') . csrf_field() . "
+                                                        <button>
+                                                                <span data-id=\"$pos->id\"
+                                                                      data-title=\"delete_news\"
+                                                                      class=\"flaticon-trash-2 delete_news_button \"
+                                                                      data-toggle=\"tooltip\" title=\"حذف\"></span>
+                                                        </button>
+                                                    </form>
+" . '</td>' .
+
+
                         '</tr>';
                 }
                 return response($out);
-            }else{
+            } else {
                 return response("not");
             }
 
