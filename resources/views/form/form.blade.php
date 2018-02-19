@@ -56,6 +56,9 @@
                             <div class="col-xs-12 col-md-10 pull-right">
                                 <input id="search" name="search" class="form-control" placeholder="جستجو">
                             </div>
+                            <div class="col-xs-12 col-md-10 pull-right">
+                                <input type="button" onclick="search()" value="اعمال" class="btn btn-primary">
+                            </div>
                         </div>
 
 
@@ -93,26 +96,15 @@
                                                 <td class="actional">
                                                     <form action="{{route('form.delete', $one_news->id)}}"
                                                           method="post">
-                                                        {{ method_field('DELETE') }}
+                                                        {{ method_field('DELETE')}}
                                                         {{csrf_field()}}
-
                                                         <button>
                                                                 <span data-id="{{$one_news->id}}"
                                                                       data-title="delete_news"
-                                                                      class="flaticon-trash-2 delete_news_button"
+                                                                      class="flaticon-trash-2 delete_news_button "
                                                                       data-toggle="tooltip" title="حذف"></span>
                                                         </button>
-
                                                     </form>
-                                                    &nbsp;
-                                                    <a href="/admin/news/edit/{{$one_news->name}}"
-                                                       data-toggle="tooltip" title="ویرایش">
-                                                        <span class="flaticon-pencil-and-paper"></span>
-                                                    </a>
-
-                                                    &#160;
-                                                    <a href="#" data-toggle="tooltip" title="پیش نمایش"><span
-                                                                class="flaticon-data-viewer"></span></a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -161,70 +153,30 @@
 @section('javascript')
 
     <script type="text/javascript">
-        $('#search').on('keyup', function () {
-            $value = $(this).val();
+        //        $('#search').on('keyup', function () {
+        //
+        //
+        //        })
+        function search() {
+            $value = $('#search').val();
             $.ajax({
                 type: 'get',
                 url: '{{\Illuminate\Support\Facades\URL::to('/admin/form/search')}}',
                 data: {'search': $value},
                 success: function (data) {
-                    $('tbody').html(data);
+                    if (data == "not") {
+                        $('tbody').html("هیچ موردی یافت نشد");
+                    } else {
+
+                        $('tbody').html(data);
+                    }
+                },
+                error: function (data) {
+                    alert("not found");
                 }
 
             })
-        })
+        }
     </script>
-
-    {{--<script type="text/javascript">--}}
-
-        {{--$('#search').keyup(function (event) {--}}
-            {{--console.log("milad");--}}
-            {{--event.preventDefault();--}}
-            {{--var t_body = $("tbody[data-content='content_table']");--}}
-            {{--var table = $('table[class="table"]');--}}
-            {{--var item = $(this).val();--}}
-            {{--$('tbody[data-title="search"]').fadeOut();--}}
-            {{--$('tbody[data-title="search"]').remove();--}}
-            {{--if (item == '') {--}}
-            {{--t_body.fadeIn();--}}
-            {{--} else {--}}
-            {{--t_body.fadeOut();--}}
-            {{--var data = {};--}}
-            {{--data.item = item;--}}
-            {{--data.status = 'search';--}}
-            {{--data._token = "{{csrf_token()}}";--}}
-            {{--$.ajax({--}}
-            {{--url: "/admin/form/search",--}}
-            {{--type: "POST",--}}
-            {{--data: data,--}}
-            {{--success: function (response) {--}}
-            {{--var html_string = '';--}}
-            {{--if (response['status']) {--}}
-            {{--html_string += '<tbody data-title="search">';--}}
-            {{--for (var i = 0; i < response['data'].length; i++) {--}}
-            {{--html_string += '<tr>';--}}
-            {{--var counter = i + 1;--}}
-            {{--html_string += '<td>' + counter + '</td>';--}}
-            {{--html_string += '<td class="">' + response['data'][i].name + '</td>';--}}
-            {{--html_string += '<td class="">' + response['data'][i].publish_date + '</td>';--}}
-            {{--html_string += '<td class="actional">';--}}
-            {{--html_string += '<span data-id="' + response['data'][i].id + '" data-title="delete_news" class="flaticon-trash-2 delete_student_button" data-toggle="tooltip" title="حذف"></span>';--}}
-            {{--html_string += ' &#160;';--}}
-            {{--html_string += '<a href="/admin/news/edit/' + response['data'][i].name + '" data-toggle="tooltip" title="ویرایش">';--}}
-            {{--html_string += '<span class="flaticon-pencil-and-paper"></span>';--}}
-            {{--html_string += ' &#160;';--}}
-            {{--html_string += '<a href="#" data-toggle="tooltip" title="پیش نمایش"><span class="flaticon-data-viewer"></span></a></td>';--}}
-            {{--html_string += '</tr>';--}}
-            {{--}--}}
-            {{--html_string += '</tbody>';--}}
-            {{--$('tbody[data-title="search"]').remove();--}}
-            {{--table.append(html_string);--}}
-            {{--}--}}
-            {{--}--}}
-
-            {{--})--}}
-            {{--}--}}
-        {{--})--}}
-    {{--</script>--}}
 @endsection
 
