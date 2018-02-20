@@ -112,5 +112,10 @@ Route::post('admin/form', 'FormController@store')->name('form.store');
 
 Route::get('admin/form/search', 'FormController@search')->name('form.search');
 
+
+
 //Route::post('/search', 'FormController@searchFunction')->name('search');
+Route::get('ajax', function (){
+    return view('ajax.ajax');
+})->name('ajax');
 
