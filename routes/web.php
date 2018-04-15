@@ -14,19 +14,14 @@
 Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin'], function () {
     Route::get('home', 'Admin\AdminController@get');
     Route::get('news/list/{page_num}', 'Admin\NewsController@get');
-
-
     Route::get('news/new', 'Admin\NewsNewController@get');
     Route::get('news/edit/{title}', 'Admin\NewsEditController@get');
-
     Route::post('news/new/post', 'Admin\NewsNewController@post');
     Route::post('news/edit/post', 'Admin\NewsEditController@post');
     Route::post('news/post', 'Admin\NewsController@post');
     Route::get('about_us/edit', 'Admin\AboutUsController@get');
-
     Route::get('contact_us', 'Admin\ContactUsController@get');
     Route::get('contact_us/answer', 'Admin\ContactUsSendAnswerController@get');
-
     Route::get('student/list/{condition}/{page_num}', 'Admin\StudentController@get')->where('page_num', '[0-9]+');
     Route::post('student/list/post', 'Admin\StudentController@post');
     Route::get('student/new', 'Admin\StudentNewController@get');
@@ -38,7 +33,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin'], function () {
     Route::get('student/semester/new/{id}', 'Admin\StudentSemesterNewController@get');
     Route::post('student/semester/new/post', 'Admin\StudentSemesterNewController@post');
     Route::get('student/semester/edit/{id}', 'Admin\StudentSemesterEditController@get');
-
     Route::get('professor/list/{page_num}', 'Admin\ProfessorController@get')->where('page_num', '[0-9]+');
     Route::post('professor/list/post', 'Admin\ProfessorController@post');
     Route::get('professor/course/{id_professor}', 'Admin\ProfessorCourseController@get');
